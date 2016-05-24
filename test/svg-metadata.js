@@ -1,6 +1,5 @@
 var tape = require('tape');
-var mjAPI = require("..//lib/mj-single.js");
-var jsdom = require('jsdom').jsdom;
+var mjAPI = require("../lib/main.js");
 
 tape('the SVG output should add dimensions and styles', function(t) {
   t.plan(3);
