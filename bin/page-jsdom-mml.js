@@ -1,4 +1,5 @@
-var mjAPI = require("../lib/main");
+"use strict";
+var mjAPI = require("../lib/main.js");
 mjAPI.start();
 var jsdom = require('jsdom').jsdom;
 var serializeDocument = require("jsdom").serializeDocument;
@@ -10,21 +11,24 @@ var window = document.defaultView;
 var array = window.document.getElementsByTagName("math");
 
 for (var i = 0; i < array.length; i++) {
-  var element = array[i];
-  mjAPI.typeset({
-    math: element.outerHTML,
-    format: "MathML",
-    svg: true
-  }, function(data) {
-    if (data.errors){
-      throw data.errors;
-    }
-    if (data.svg) {
-      var svg = document.createElement("span");
-      svg.innerHTML = data.svg;
-      console.log(element.parentElement.innerHTML);;
-      element.parentNode.replaceChild(svg, element);
-    }
-});
+    let index = i;
+    let element = array[index];
+    mjAPI.typeset({
+      math: element.outerHTML,
+      format: "MathML",
+      svg: true,
+      speakText: true
+    }, function(data) {
+      if (data.errors){
+        throw data.errors;
+      }
+      if (data.svg) {
+        var svg = document.createElement("span");
+        svg.innerHTML = data.svg;
+        element.parentNode.replaceChild(svg, element);
+      }
+      if ( (index+1) === array.length) {
+        console.log(serializeDocument(document));
+      }
+    });
 }
-console.log(serializeDocument(document));
